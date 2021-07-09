@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.google.android.webview">
+
+    <application>
+
+        <meta-data
+            android:name="com.android.webview.WebViewLibrary"
+            android:value="libc++_shared.so"/>
+
+    </application>
+
+</manifest>
