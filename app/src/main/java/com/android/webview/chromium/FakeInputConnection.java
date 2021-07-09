@@ -132,7 +132,7 @@ public class FakeInputConnection implements InputConnection {
 
     @Override
     public Handler getHandler() {
-        return mHandler.getOrCompute();
+        return mHandler.get();
     }
 
     @Override

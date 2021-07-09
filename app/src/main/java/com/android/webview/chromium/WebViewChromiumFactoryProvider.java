@@ -51,10 +51,9 @@ public class WebViewChromiumFactoryProvider implements WebViewFactoryProvider {
 
     @Override
     public WebViewProvider createWebView(WebView webView, WebView.PrivateAccess privateAccess) {
-        final Field f = mField.getOrCompute();
-        if (f != null) {
+        if (mField.get() != null) {
             try {
-                f.set(webView, mLayoutParams.getOrCompute());
+                mField.get().set(webView, mLayoutParams.get());
             } catch (ReflectiveOperationException e) {
                 e.printStackTrace();
             }

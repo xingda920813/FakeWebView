@@ -238,7 +238,7 @@ public class FakeViewDelegate implements WebViewProvider.ViewDelegate {
 
     @Override
     public Handler getHandler(Handler originalHandler) {
-        return mHandler.getOrCompute();
+        return mHandler.get();
     }
 
     @Override
