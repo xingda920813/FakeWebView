@@ -58,12 +58,13 @@ public class WebViewChromiumFactoryProvider implements WebViewFactoryProvider {
                 e.printStackTrace();
             }
         }
+        webView.setVisibility(View.GONE);
         return new FakeWebViewProvider(webView);
     }
 
     @Override
     public GeolocationPermissions getGeolocationPermissions() {
-        return GeolocationPermissions.getInstance();
+        return new GeolocationPermissions();
     }
 
     @Override
@@ -93,7 +94,7 @@ public class WebViewChromiumFactoryProvider implements WebViewFactoryProvider {
 
     @Override
     public WebStorage getWebStorage() {
-        return WebStorage.getInstance();
+        return new WebStorage();
     }
 
     @Override

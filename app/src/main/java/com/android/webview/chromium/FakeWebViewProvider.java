@@ -30,7 +30,7 @@ import java.util.concurrent.Executor;
 @SuppressWarnings("deprecation")
 public class FakeWebViewProvider implements WebViewProvider {
 
-    final WebView mWebView;
+    WebView mWebView;
 
     public FakeWebViewProvider(WebView webView) {
         mWebView = webView;
@@ -93,7 +93,7 @@ public class FakeWebViewProvider implements WebViewProvider {
 
     @Override
     public void destroy() {
-
+        mWebView = null;
     }
 
     @Override
