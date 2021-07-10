@@ -41,17 +41,26 @@ public class WebView extends AbsoluteLayout {
 
     public class PrivateAccess {
 
+        public PrivateAccess() {
+
+        }
     }
 
     public static class HitTestResult {
 
-    }
+        public HitTestResult() {
 
-    public interface PictureListener {
-
+        }
     }
 
     public static abstract class VisualStateCallback {
+
+        public VisualStateCallback() {
+
+        }
+    }
+
+    public interface PictureListener {
 
     }
 

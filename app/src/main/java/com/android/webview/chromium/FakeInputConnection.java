@@ -13,7 +13,7 @@ import android.view.inputmethod.InputContentInfo;
 
 public class FakeInputConnection implements InputConnection {
 
-    private final Lazy<Handler> mHandler = new Lazy<>(() -> new Handler(Looper.getMainLooper()));
+    final Lazy<Handler> mHandler = new Lazy<>(() -> new Handler(Looper.getMainLooper()));
 
     @Override
     public CharSequence getTextBeforeCursor(int n, int flags) {

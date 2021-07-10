@@ -24,7 +24,7 @@ import android.webkit.WebViewProvider;
 
 public class FakeViewDelegate implements WebViewProvider.ViewDelegate {
 
-    private final Lazy<Handler> mHandler = new Lazy<>(() -> new Handler(Looper.getMainLooper()));
+    final Lazy<Handler> mHandler = new Lazy<>(() -> new Handler(Looper.getMainLooper()));
 
     @Override
     public boolean shouldDelayChildPressedState() {

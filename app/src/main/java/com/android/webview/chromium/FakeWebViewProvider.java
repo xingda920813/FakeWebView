@@ -30,6 +30,12 @@ import java.util.concurrent.Executor;
 @SuppressWarnings("deprecation")
 public class FakeWebViewProvider implements WebViewProvider {
 
+    final WebView mWebView;
+
+    public FakeWebViewProvider(WebView webView) {
+        mWebView = webView;
+    }
+
     @Override
     public void init(Map<String, Object> javaScriptInterfaces, boolean privateBrowsing) {
 
@@ -472,7 +478,7 @@ public class FakeWebViewProvider implements WebViewProvider {
 
     @Override
     public View getZoomControls() {
-        return null;
+        return mWebView;
     }
 
     @Override
@@ -507,7 +513,7 @@ public class FakeWebViewProvider implements WebViewProvider {
 
     @Override
     public View findHierarchyView(String className, int hashCode) {
-        return null;
+        return mWebView;
     }
 
     @Override

@@ -25,7 +25,7 @@ import java.lang.reflect.Field;
 @SuppressLint("SoonBlockedPrivateApi")
 public class WebViewChromiumFactoryProvider implements WebViewFactoryProvider {
 
-    private final Lazy<Field> mField = new Lazy<>(() -> {
+    final Lazy<Field> mField = new Lazy<>(() -> {
         try {
             final Field f = View.class.getDeclaredField("mLayoutParams");
             f.setAccessible(true);
@@ -36,7 +36,7 @@ public class WebViewChromiumFactoryProvider implements WebViewFactoryProvider {
         }
     });
 
-    private final Lazy<FrameLayout.LayoutParams> mLayoutParams = new Lazy<>(() -> new FrameLayout
+    final Lazy<FrameLayout.LayoutParams> mLayoutParams = new Lazy<>(() -> new FrameLayout
             .LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,
             Gravity.CENTER));
 
@@ -58,7 +58,7 @@ public class WebViewChromiumFactoryProvider implements WebViewFactoryProvider {
                 e.printStackTrace();
             }
         }
-        return new FakeWebViewProvider();
+        return new FakeWebViewProvider(webView);
     }
 
     @Override
