@@ -5,6 +5,7 @@ import android.content.Context;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.webkit.CookieManager;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ServiceWorkerController;
@@ -18,6 +19,8 @@ import android.webkit.WebViewDelegate;
 import android.webkit.WebViewFactoryProvider;
 import android.webkit.WebViewProvider;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import java.lang.reflect.Field;
 
@@ -36,7 +39,13 @@ public class WebViewChromiumFactoryProvider implements WebViewFactoryProvider {
         }
     });
 
-    final Lazy<FrameLayout.LayoutParams> mLayoutParams = new Lazy<>(() -> new FrameLayout
+    final Lazy<LinearLayout.LayoutParams> mLinearLayoutParams = new Lazy<>(() -> new LinearLayout
+            .LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+    final Lazy<RelativeLayout.LayoutParams> mRelativeLayoutParams = new Lazy<>(() -> new RelativeLayout
+            .LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+
+    final Lazy<FrameLayout.LayoutParams> mFrameLayoutParams = new Lazy<>(() -> new FrameLayout
             .LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT,
             Gravity.CENTER));
 
@@ -49,15 +58,37 @@ public class WebViewChromiumFactoryProvider implements WebViewFactoryProvider {
         return new FakeStatics();
     }
 
+    void setLayoutParams(WebView webView) {
+        if (mField.get() == null) return;
+        final ViewParent parent = webView.getParent();
+        final ViewGroup.MarginLayoutParams layoutParams;
+        if (parent instanceof LinearLayout) {
+            layoutParams = mLinearLayoutParams.get();
+        } else if (parent instanceof RelativeLayout) {
+            layoutParams = mRelativeLayoutParams.get();
+        } else {
+            layoutParams = mFrameLayoutParams.get();
+        }
+        try {
+            mField.get().set(webView, layoutParams);
+        } catch (ReflectiveOperationException e) {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public WebViewProvider createWebView(WebView webView, WebView.PrivateAccess privateAccess) {
-        if (mField.get() != null) {
-            try {
-                mField.get().set(webView, mLayoutParams.get());
-            } catch (ReflectiveOperationException e) {
-                e.printStackTrace();
+        webView.addOnAttachStateChangeListener(new View.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+                webView.removeOnAttachStateChangeListener(this);
+                setLayoutParams(webView);
             }
-        }
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {}
+        });
+        setLayoutParams(webView);
         webView.setVisibility(View.GONE);
         return new FakeWebViewProvider(webView);
     }
