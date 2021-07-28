@@ -30,7 +30,7 @@ public class WebViewChromiumFactoryProvider implements WebViewFactoryProvider {
 
     final Lazy<Field> mField = new Lazy<>(() -> {
         try {
-            final Field f = View.class.getDeclaredField("mLayoutParams");
+            final var f = View.class.getDeclaredField("mLayoutParams");
             f.setAccessible(true);
             return f;
         } catch (ReflectiveOperationException e) {
@@ -60,7 +60,7 @@ public class WebViewChromiumFactoryProvider implements WebViewFactoryProvider {
 
     void setLayoutParams(WebView webView) {
         if (mField.get() == null) return;
-        final ViewParent parent = webView.getParent();
+        final var parent = webView.getParent();
         final ViewGroup.MarginLayoutParams layoutParams;
         if (parent instanceof LinearLayout) {
             layoutParams = mLinearLayoutParams.get();
@@ -86,7 +86,9 @@ public class WebViewChromiumFactoryProvider implements WebViewFactoryProvider {
             }
 
             @Override
-            public void onViewDetachedFromWindow(View v) {}
+            public void onViewDetachedFromWindow(View v) {
+                webView.removeOnAttachStateChangeListener(this);
+            }
         });
         setLayoutParams(webView);
         webView.setVisibility(View.GONE);
